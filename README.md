@@ -25,7 +25,7 @@
 ### Step 5: Feedback and Support
   - For feedback or assistance, use the "Report a bug" link in the menu.
 
-Deployed site - https://harmony.streamlit.app/
+# Deployed site - https://harmony.streamlit.app/
 
 ## Real World Application Examples
 
