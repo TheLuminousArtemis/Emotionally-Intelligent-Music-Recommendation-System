@@ -3,7 +3,16 @@ import pandas as pd
 import streamlit as st
 from recommender import hybrid_recommend
 
-st.set_page_config(page_title="Music Recommendation System")
+dataset_url = 'https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs'
+
+st.set_page_config(
+        page_title="Emotionally Intelligent Music Recommendation System",
+        page_icon='🎶',
+        menu_items={'Report a bug':'https://github.com/TheLuminousArtemis/ei-music-recommendation-system/issues',
+                    'About': f"[Dataset]({dataset_url})"
+                    }
+)
+
 
 songs_dict = pickle.load(open('pickles/data.pkl', 'rb'))
 songs = pd.DataFrame(songs_dict)
@@ -36,18 +45,18 @@ if enable_mood_filtering:
     if 'current_recommendations' not in st.session_state:
         st.session_state.current_recommendations = None
 
-    song_moods = songs['predicted_mood_rf'].unique()
+    song_moods = songs['predicted_mood'].unique()
     song_moods = [mood.title() for mood in song_moods]
     selected_mood = st.sidebar.selectbox('Moods', song_moods)
 
     change_recommendations = st.button("Change Recommendations", key="change_recommendations")
     if change_recommendations:
         st.session_state.current_recommendations = songs[
-            songs['predicted_mood_rf'].str.title() == selected_mood].sample(n=num_songs)
+            songs['predicted_mood'].str.title() == selected_mood].sample(n=num_songs)
 
     if st.session_state.current_recommendations is None:
         st.session_state.current_recommendations = songs[
-            songs['predicted_mood_rf'].str.title() == selected_mood].sample(n=num_songs)
+            songs['predicted_mood'].str.title() == selected_mood].sample(n=num_songs)
 
     # Display recommended songs with adjacent "Show Lyrics" buttons and Spotify links
     st.title('Recommended Songs:')
